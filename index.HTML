@@ -8,27 +8,28 @@
     <title>Calculator</title>
   </head>
   <body>
+    <script src="script.js"></script>
     <div class="calculator">
-      <input class="display" value="0" type="text" />
-      <div class="buttons">
+      <p class="display">0</p>
+      <div class="buttons" onclick="input(event)">
         <button id="button" class="operator" value="+">+</button>
         <button id="button" class="operator" value="-">-</button>
         <button id="button" class="operator" value="*">*</button>
         <button id="button" class="operator" value="/">/</button>
 
-        <button id="button" value="9">9</button>
-        <button id="button" value="8">8</button>
-        <button id="button" value="7">7</button>
+        <button id="button" class="number" value="7">7</button>
+        <button id="button" class="number" value="8">8</button>
+        <button id="button" class="number" value="9">9</button>
 
-        <button id="button" value="6">6</button>
-        <button id="button" value="5">5</button>
-        <button id="button" value="4">4</button>
+        <button id="button" class="number" value="4">4</button>
+        <button id="button" class="number" value="5">5</button>
+        <button id="button" class="number" value="6">6</button>
 
-        <button id="button" value="3">3</button>
-        <button id="button" value="2">2</button>
-        <button id="button" value="1">1</button>
+        <button id="button" class="number" value="1">1</button>
+        <button id="button" class="number" value="2">2</button>
+        <button id="button" class="number" value="3">3</button>
 
-        <button id="button" value="0">0</button>
+        <button id="button" class="number" value="0">0</button>
         <button id="button" class="equal" value="=">=</button>
         <button id="button" class="decimal" value=".">.</button>
         <button id="button" class="clear" value="clear">CLEAR</button>
