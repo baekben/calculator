@@ -35,7 +35,6 @@ function input(e) {
     case 'clear':
       display.textContent = '';
       sndDisplay.textContent = '';
-      console.clear();
       break;
     case 'decimal':
       value = value + '.' + 0;
