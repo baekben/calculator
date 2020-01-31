@@ -1,10 +1,11 @@
 const calculator = document.querySelector('.calculator');
 const buttons = document.querySelectorAll('.buttons');
 const display = document.querySelector('.display');
-const sndDisplay = document.getElementById('secondary');
+var sndDisplay = document.getElementById('secondary');
 var nums = '';
 var answer;
 var displayError = false;
+
 buttons.forEach(button => button.addEventListener('click', input));
 
 function input(e) {
@@ -12,28 +13,29 @@ function input(e) {
   const type = button.className;
   const value = button.getAttribute('value');
   console.log(value);
-  if ((displayError = true)) {
+  if (displayError == true) {
     display.textContent = '';
     sndDisplay.textContent = '';
     displayError = false;
   }
   display.textContent = value;
-  sndDisplay.innerHTML += value;
+  sndDisplay.textContent += value;
   switch (type) {
     case 'number':
       nums += value;
-
       console.log(nums);
       break;
     case 'operator':
       nums += value;
       break;
     case 'equal':
-      display.textContent = solving(nums);
-      nums = '';
-      sndDisplay.innerHTML = '';
+      let memory = solving(nums); //calculator memory
+      display.textContent = memory;
+      nums = memory;
+      sndDisplay.innerHTML = memory;
       break;
     case 'clear':
+      nums = '';
       display.textContent = '';
       sndDisplay.textContent = '';
       break;
@@ -42,6 +44,8 @@ function input(e) {
       break;
   }
 }
+
+function clearAll() {}
 
 function solving(problem) {
   if (problem.includes('/0')) {
