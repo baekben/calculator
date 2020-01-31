@@ -12,10 +12,11 @@ function input(e) {
   const type = button.className;
   const value = button.getAttribute('value');
   console.log(value);
-  // if ((displayError = true)) {
-  //   display.textContent = '';
-  //   displayError = false;
-  // }
+  if ((displayError = true)) {
+    display.textContent = '';
+    sndDisplay.textContent = '';
+    displayError = false;
+  }
   display.textContent = value;
   sndDisplay.innerHTML += value;
   switch (type) {
@@ -43,6 +44,11 @@ function input(e) {
 }
 
 function solving(problem) {
+  if (problem.includes('/0')) {
+    alert("ERROR\nCan't Divide by 0");
+    displayError = true;
+    return;
+  }
   let mathProblem = problem.split('');
   console.log(mathProblem);
 
