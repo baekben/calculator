@@ -1,10 +1,12 @@
 const calculator = document.querySelector('.calculator');
 const buttons = document.querySelectorAll('.buttons');
-var display = document.querySelector('.display');
-var nums = new Array();
+const display = document.querySelector('.display');
+const sndDisplay = document.getElementById('secondary');
+var nums = '';
 var answer;
 var displayError = false;
 buttons.forEach(button => button.addEventListener('click', input));
+
 function input(e) {
   const button = e.target;
   const type = button.className;
@@ -15,25 +17,59 @@ function input(e) {
   //   displayError = false;
   // }
   display.textContent = value;
+  sndDisplay.innerHTML += value;
   switch (type) {
     case 'number':
-      nums.push(Number(value));
+      nums += value;
 
       console.log(nums);
       break;
     case 'operator':
-      nums.push(value);
+      nums += value;
       break;
     case 'equal':
-      console.log(nums[0]);
-      console.log(nums[1]);
-      operate(nums[1], nums[0], nums[2]);
-      nums = [];
+      display.textContent = solving(nums);
+      nums = '';
+      sndDisplay.innerHTML = '';
       break;
     case 'clear':
       display.textContent = '';
+      sndDisplay.textContent = '';
+      console.clear();
+      break;
+    case 'decimal':
+      value = value + '.' + 0;
       break;
   }
+}
+
+function solving(problem) {
+  let mathProblem = problem.split('');
+  console.log(mathProblem);
+
+  for (let i = 0; i < mathProblem.length; i++) {
+    if (mathProblem[i] == '*' || mathProblem[i] == '/') {
+      let part = operate(
+        mathProblem[i],
+        mathProblem[i - 1],
+        mathProblem[i + 1]
+      );
+      mathProblem.splice(i - 1, 3, part);
+      i--;
+    } else if (mathProblem[i] == '+' || mathProblem[i] == '-') {
+      let part = operate(
+        mathProblem[i],
+        mathProblem[i - 1],
+        mathProblem[i + 1]
+      );
+      mathProblem.splice(i - 1, 3, part);
+      i--;
+    }
+  }
+
+  console.log(Number(mathProblem));
+  answer = Number(mathProblem);
+  return answer.toString();
 }
 
 function add(a, b) {
@@ -51,6 +87,8 @@ function divide(a, b) {
 
 function operate(operator, num1, num2) {
   //solves the problem
+  num1 = Number(num1);
+  num2 = Number(num2);
   var total;
   switch (operator) {
     case '+':
@@ -66,6 +104,7 @@ function operate(operator, num1, num2) {
       total = divide(num1, num2);
       break;
   }
-  display.textContent = total.toString();
-  console.log(total);
+  return total;
+  // display.textContent = total.toString();
+  // console.log(total);
 }
