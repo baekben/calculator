@@ -5,13 +5,15 @@ var sndDisplay = document.getElementById('secondary');
 var nums = '';
 var answer;
 var displayError = false;
+var decimalOn = '';
 
 buttons.forEach(button => button.addEventListener('click', input));
 
 function input(e) {
+  //button function
   const button = e.target;
   const type = button.className;
-  const value = button.getAttribute('value');
+  var value = button.getAttribute('value');
   console.log(value);
   if (displayError == true) {
     display.textContent = '';
@@ -23,7 +25,6 @@ function input(e) {
   switch (type) {
     case 'number':
       nums += value;
-      console.log(nums);
       break;
     case 'operator':
       nums += value;
@@ -40,21 +41,31 @@ function input(e) {
       sndDisplay.textContent = '';
       break;
     case 'decimal':
-      value = value + '.' + 0;
+      nums += decimal(value);
+      decimalOn = '';
       break;
   }
 }
 
-function clearAll() {}
+function decimal(value) {
+  if (value == '.' && decimalOn == 'yes') {
+    alert('ERROR\nDecimal already in place for this number.');
+    return;
+  } else {
+    decimalOn = 'yes';
+    return '.';
+  }
+}
 
 function solving(problem) {
+  console.log('problem: ' + problem);
   if (problem.includes('/0')) {
     alert("ERROR\nCan't Divide by 0");
     displayError = true;
     return;
   }
-  let mathProblem = problem.split('');
-  console.log(mathProblem);
+
+  let mathProblem = verifyExpression(problem);
 
   for (let i = 0; i < mathProblem.length; i++) {
     if (mathProblem[i] == '*' || mathProblem[i] == '/') {
@@ -79,6 +90,23 @@ function solving(problem) {
   console.log(Number(mathProblem));
   answer = Number(mathProblem);
   return answer.toString();
+}
+
+function verifyExpression(expression) {
+  var mathExpression = expression;
+  expression = expression.replace(/[0-9]+/g, '#').replace(/[\(|\|\.)]/g, '');
+  var numbers = mathExpression.split(/[^0-9\.]+/);
+  var operators = expression.split('#').filter(function(i) {
+    return i;
+  });
+  var verified = [];
+  for (let i = 0; i < numbers.length; i++) {
+    verified.push(numbers[i]);
+    if (i < operators.length) {
+      verified.push(operators[i]);
+    }
+  }
+  return verified;
 }
 
 function add(a, b) {
