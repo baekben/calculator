@@ -2,24 +2,32 @@ const calculator = document.querySelector('.calculator');
 const buttons = document.querySelectorAll('.buttons');
 const display = document.querySelector('.display');
 var sndDisplay = document.getElementById('secondary');
+
 var nums = '';
 var answer;
-var displayError = false;
 var decimalOn = '';
+var fromNum = false;
 
-buttons.forEach(button => button.addEventListener('click', input));
+buttons.forEach(button => {
+  button.addEventListener('click', event => input(event.target));
+});
+
+window.addEventListener('keydown', function(e) {
+  const numPad = document.querySelector(`#button[data-key="${e.keyCode}"]`);
+  if (!numPad) return;
+  fromNum = true;
+  input(numPad);
+});
 
 function input(e) {
   //button function
-  const button = e.target;
-  const type = button.className;
-  var value = button.getAttribute('value');
+  var value = e.getAttribute('value');
+  const type = e.className;
+  //var value = button.getAttribute('value');
   console.log(value);
-  if (displayError == true) {
-    display.textContent = '';
-    sndDisplay.textContent = '';
-    displayError = false;
-  }
+
+  displayError(false);
+
   display.textContent = value;
   sndDisplay.textContent += value;
   switch (type) {
@@ -36,7 +44,7 @@ function input(e) {
       sndDisplay.innerHTML = memory;
       break;
     case 'clear':
-      nums = '';
+      nums = ''; //clears memory
       display.textContent = '';
       sndDisplay.textContent = '';
       break;
@@ -44,6 +52,14 @@ function input(e) {
       nums += decimal(value);
       decimalOn = '';
       break;
+  }
+}
+
+function displayError(status) {
+  if (status == true) {
+    display.textContent = '';
+    sndDisplay.textContent = '';
+    displayError(false);
   }
 }
 
@@ -61,7 +77,7 @@ function solving(problem) {
   console.log('problem: ' + problem);
   if (problem.includes('/0')) {
     alert("ERROR\nCan't Divide by 0");
-    displayError = true;
+    displayError(true);
     return;
   }
 
